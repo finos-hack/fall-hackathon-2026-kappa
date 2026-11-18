@@ -1,54 +1,87 @@
-# {project name}
+# REVOKELINE
 
-**Hackathon Track:** {track name/number}
+Runtime incident response for FINOS Governance-as-Code.
 
-Short blurb about what your project does.
+**Hackathon Track:** Track 2 — Extend & Utilize FINOS Governance-as-Code
+FINOS Fall 2026 Hackathon · Team Kappa
+
+A KYC workflow can start with a trusted third-party provider and still be running when that provider is compromised. REVOKELINE checks authorization again at the next sensitive operation, refuses stale grants, and routes affected work to a native Fluxnova human review task. The prototype uses a synthetic provider and synthetic data.
+
+![Command Center after revocation](evidence/screenshots/gate5-live-dmn.png)
+
+## How it works
+
+```mermaid
+flowchart LR
+    I[Provider incident] --> G[REVOKELINE gateway]
+    G --> C[CALM dependency graph]
+    B[Fluxnova BPMN worker] --> G
+    G --> D[Fluxnova DMN policy]
+    G --> E[Hash-chained events]
+    G -->|DENY| B
+    B --> H[Human review task]
+    E --> A[Offline assurance]
+```
+
+The gateway tracks provider status and grant versions. In DMN mode, a request must satisfy both the local safety guard and a decision from a pinned Fluxnova definition. A policy service failure does not grant access. The worker completes its BPMN task with the authorization outcome; a denied request leads to manual review.
+
+| FINOS project | Integration |
+| --- | --- |
+| [CALM](https://calm.finos.org/) | Strict architecture validation and dependency traversal |
+| [Fluxnova](https://github.com/finos/fluxnova-bpm-platform) | Executable BPMN workflow and DMN authorization policy |
+| [AIGF](https://github.com/finos/ai-governance-framework) | Traceability to selected mitigation references |
+| [CCC](https://ccc.finos.org/) | Scoped gap assessment against selected control requirements; not an official conformance test |
 
 ## Installation
 
-OS X & Linux:
+Requirements: Python 3.12, Docker, and Node.js 22.13+ for the CALM CLI. See [local setup and demo](docs/RUNBOOK.md) for the complete sequence, including the DMN deployment and environment variables.
 
 ```sh
-npm install my-crazy-module --save
-```
-
-Windows:
-
-```sh
-edit autoexec.bat
+python -m pip install -r requirements.txt
+npm install -g @finos/calm-cli
+calm validate -a architectures/revokeline.calm.json --strict
 ```
 
 ## Usage example
 
-A few motivating and useful examples of how your project can be used. Spice this up with code blocks and potentially screenshots / videos.
+Once the engine and gateway are running, use `python -m scripts.fluxnova_targeted_demo`, or start the Command Center on port 8001 as described in the runbook.
+
+## Results
+
+Local integration runs on 18 November 2026 with Fluxnova 2.0.0:
+
+- A previously authorized grant returned HTTP 200 before revocation and HTTP 403 afterwards. Fluxnova created an active `human_review` task.
+- The live DMN policy returned the expected result for all 16 Boolean input combinations (1 ALLOW, 15 DENY).
+- CALM strict validation returned no errors or warnings.
+- Offline assurance accepted the original evidence, rejected an altered event and refused production approval.
+
+The [recorded results](docs/RESULTS.md) explain the evidence and its scope. To inspect the saved run without a live engine:
+
+```sh
+python -m scripts.compare_policy --evidence-file evidence/gate5-live-dmn.json --require-dmn 618d4f37-e347-11f1-9fac-76863b3dbd01
+```
+
+The comparator models a cached ALLOW against the observed gateway DENY for one matched replay. It does not run an unprotected vendor call.
+
+## Limitations
+
+This is a local proof of concept, not a production security system. HTTP is not encrypted; gateway state and the audit chain are in memory. No external credentials are revoked. The audit export is not signed or independently anchored. The logical CALM graph does not separately model the optional DMN REST call. CCC assessments are scoped to the known local design; production approval remains blocked.
 
 ## Development setup
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+Use Python 3.12 and a virtual environment. Install dependencies with `python -m pip install -r requirements.txt` and run `python -m pytest tests -q`. The test suite includes local regression checks, mocked engine contracts and checks against a recorded integration export. Live Fluxnova checks are separate; see the [runbook](docs/RUNBOOK.md).
 
-```sh
-make install
-npm test
-```
+Development used AI-assisted design, coding and documentation. The live integration tests were run locally against Fluxnova 2.0.0.
 
 ## Roadmap
 
-This project was built during a time-boxed FINOS hackathon. List below what you would like to achieve after the hackathon, if the project continues.
-
-1. {Goal after the hackathon}
-2. {Goal after the hackathon}
+- Validate selective containment across independent providers and workflows.
+- Exercise policy engine outages against a live deployment.
+- Add authenticated callers, encrypted transport and a separately protected audit sink before considering production use.
 
 ## Contributing
 
-Coding agents should follow [AGENTS.md](./AGENTS.md), which requires a Developer Certificate of Origin sign-off on every commit.
-
-**All commits** must be signed with a DCO signature to avoid being flagged by the DCO Bot. This means that your commit log message must contain a line that looks like the following one, with your actual name and email address:
-
-```
-Signed-off-by: John Doe <john.doe@example.com>
-```
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
+Follow [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md). Submit changes through pull requests. Every contribution commit requires a Developer Certificate of Origin (DCO) sign-off matching its author; use `git commit -s`.
 
 ## License
 

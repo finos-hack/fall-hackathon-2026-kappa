@@ -1,1 +1,14 @@
 .DS_Store
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+node_modules/
+.env.*
+!.env.example
+*.log
+.coverage
+htmlcov/
+dist/
+build/

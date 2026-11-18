@@ -1,0 +1,27 @@
+{
+  "status": "PASS_CACHED_BASELINE_COMPARISON",
+  "matched_post_incident_calls": 1,
+  "cached_baseline_unsafe_allows": 1,
+  "observed_gateway_unsafe_allows": 0,
+  "rows": [
+    {
+      "case_id": "KYC-LIVE-3b8df312ba",
+      "grant_version": 1,
+      "cached_baseline": "ALLOW",
+      "observed_gateway": "DENY",
+      "policy": {
+        "engine": "FLUXNOVA_DMN",
+        "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+        "decision": "DENY",
+        "facts": {
+          "policy_enabled": true,
+          "provider_active": false,
+          "route_automated": false,
+          "grant_matches": false
+        }
+      },
+      "event_hash": "7c1da9456b25f6d6fead2fa0fc441eec7b030c5d05365d6a7316cec11215ea6e"
+    }
+  ],
+  "scope": "Synthetic cached-decision counterfactual computed from actual gateway audit events; no unprotected provider call or external credential test."
+}

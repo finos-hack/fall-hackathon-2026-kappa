@@ -1,0 +1,56 @@
+﻿{
+  "status": "FAIL_SCOPED_DEMO_ASSURANCE",
+  "production_readiness": "BLOCKED",
+  "decision_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+  "checks": [
+    {
+      "id": "RVL.EVIDENCE.CHAIN",
+      "status": "FAIL",
+      "detail": "Event digest mismatch"
+    },
+    {
+      "id": "RVL.RUNTIME.CORRELATION",
+      "status": "FAIL",
+      "detail": "Event digest mismatch"
+    },
+    {
+      "id": "RVL.DMN.MATRIX",
+      "status": "PASS",
+      "detail": "16 distinct boolean combinations: 1 ALLOW, 15 DENY."
+    }
+  ],
+  "ccc_assessments": [
+    {
+      "id": "CCC.Core.CN01.AR01",
+      "status": "FAIL",
+      "detail": "Declared plaintext HTTP: fluxnova-kyc-process:8080, revokeline-gateway:8000"
+    },
+    {
+      "id": "CCC.Core.CN01.AR03",
+      "status": "FAIL",
+      "detail": "Recorded local HTTP API requests were accepted; no HTTPS redirect or block in demo."
+    },
+    {
+      "id": "CCC.Core.CN04.AR03",
+      "status": "PARTIAL",
+      "detail": "Two access decisions contain timestamps, results and case/provider IDs; authenticated client identity and complete read-attempt coverage are not established."
+    },
+    {
+      "id": "CCC.Core.CN09.AR01",
+      "status": "FAIL",
+      "detail": "In-memory log is exposed by the same gateway; no separate protected log sink."
+    }
+  ],
+  "aigf_traceability": {
+    "MI-18": [
+      "RVL.RUNTIME.CORRELATION",
+      "RVL.DMN.MATRIX"
+    ],
+    "MI-21": [
+      "RVL.EVIDENCE.CHAIN",
+      "RVL.RUNTIME.CORRELATION"
+    ],
+    "MI-12": []
+  },
+  "scope": "Custom offline checks on a local synthetic scenario; no official CCC validator, no authenticated actor proof, no external attestation. Not a production approval."
+}

@@ -1,0 +1,184 @@
+﻿{
+  "decision_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+  "rows": [
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": false,
+        "route_automated": false,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": false,
+        "route_automated": false,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": false,
+        "route_automated": true,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": false,
+        "route_automated": true,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": true,
+        "route_automated": false,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": true,
+        "route_automated": false,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": true,
+        "route_automated": true,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": false,
+        "provider_active": true,
+        "route_automated": true,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": false,
+        "route_automated": false,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": false,
+        "route_automated": false,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": false,
+        "route_automated": true,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": false,
+        "route_automated": true,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": true,
+        "route_automated": false,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": true,
+        "route_automated": false,
+        "grant_matches": true
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": true,
+        "route_automated": true,
+        "grant_matches": false
+      },
+      "expected": "DENY",
+      "observed": "DENY",
+      "pass": true
+    },
+    {
+      "facts": {
+        "policy_enabled": true,
+        "provider_active": true,
+        "route_automated": true,
+        "grant_matches": true
+      },
+      "expected": "ALLOW",
+      "observed": "ALLOW",
+      "pass": true
+    }
+  ],
+  "passed": 16,
+  "total": 16,
+  "status": "PASS_LIVE_DMN_MATRIX"
+}

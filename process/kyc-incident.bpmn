@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  id="RevokelineDefinitions" targetNamespace="https://finos.org/revokeline/demo">
+  <bpmn:process id="revokeline_kyc" name="KYC with Runtime Incident Fallback" isExecutable="false">
+    <bpmn:startEvent id="start" name="Document received"/>
+    <bpmn:serviceTask id="check_authority" name="Revalidate provider authorization"/>
+    <bpmn:exclusiveGateway id="authorization_gateway" name="Provider still trusted?"/>
+    <bpmn:serviceTask id="external_verify" name="External verification"/>
+    <bpmn:userTask id="human_review" name="Mandatory analyst review"/>
+    <bpmn:endEvent id="end_auto" name="Verified"/>
+    <bpmn:endEvent id="end_human" name="Review queued"/>
+    <bpmn:sequenceFlow id="f1" sourceRef="start" targetRef="check_authority"/>
+    <bpmn:sequenceFlow id="f2" sourceRef="check_authority" targetRef="authorization_gateway"/>
+    <bpmn:sequenceFlow id="f3" sourceRef="authorization_gateway" targetRef="external_verify" name="Authorized"/>
+    <bpmn:sequenceFlow id="f4" sourceRef="authorization_gateway" targetRef="human_review" name="Revoked or stale"/>
+    <bpmn:sequenceFlow id="f5" sourceRef="external_verify" targetRef="end_auto"/>
+    <bpmn:sequenceFlow id="f6" sourceRef="human_review" targetRef="end_human"/>
+  </bpmn:process>
+</bpmn:definitions>

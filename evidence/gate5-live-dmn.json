@@ -1,0 +1,219 @@
+{
+  "phase": "VERIFIED",
+  "run_id": "3b8df312ba294a66bddccb83d6ec7cbc",
+  "steps": {
+    "reset": {
+      "reset": true
+    },
+    "start": {
+      "case": {
+        "case_id": "KYC-LIVE-3b8df312ba",
+        "provider_id": "external-kyc-provider",
+        "grant_version": 1,
+        "route": "AUTOMATED_VERIFICATION"
+      },
+      "process_instance": {
+        "links": [
+          {
+            "method": "GET",
+            "href": "http://127.0.0.1:8080/engine-rest/process-instance/93406872-e34b-11f1-9fac-76863b3dbd01",
+            "rel": "self"
+          }
+        ],
+        "id": "93406872-e34b-11f1-9fac-76863b3dbd01",
+        "definitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+        "businessKey": "KYC-LIVE-3b8df312ba",
+        "caseInstanceId": null,
+        "ended": false,
+        "suspended": false,
+        "tenantId": null,
+        "definitionKey": "revokeline_kyc_v02"
+      }
+    },
+    "external_task": {
+      "activityId": "check_authority",
+      "activityInstanceId": "check_authority:9342d97c-e34b-11f1-9fac-76863b3dbd01",
+      "errorMessage": null,
+      "executionId": "9342d97b-e34b-11f1-9fac-76863b3dbd01",
+      "id": "9343279d-e34b-11f1-9fac-76863b3dbd01",
+      "lockExpirationTime": null,
+      "createTime": "2026-11-18T12:28:35.790+0000",
+      "processDefinitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+      "processDefinitionKey": "revokeline_kyc_v02",
+      "processDefinitionVersionTag": null,
+      "processInstanceId": "93406872-e34b-11f1-9fac-76863b3dbd01",
+      "retries": null,
+      "suspended": false,
+      "workerId": null,
+      "topicName": "revokeline-kyc-authority",
+      "tenantId": null,
+      "priority": 0,
+      "businessKey": "KYC-LIVE-3b8df312ba"
+    },
+    "variables": {
+      "case_id": "KYC-LIVE-3b8df312ba",
+      "provider_id": "external-kyc-provider",
+      "grant_version": 1
+    },
+    "before": {
+      "status": 200,
+      "response": {
+        "decision": "ALLOW",
+        "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+      }
+    },
+    "incident": {
+      "status": "REVOKED",
+      "version": 2,
+      "cases_rerouted": [
+        "KYC-LIVE-3b8df312ba"
+      ],
+      "impact": [
+        "fluxnova-kyc-process",
+        "revokeline-gateway"
+      ]
+    },
+    "lock": {
+      "status": 204,
+      "task_id": "9343279d-e34b-11f1-9fac-76863b3dbd01"
+    },
+    "after": {
+      "status": 403,
+      "response": {
+        "detail": {
+          "decision": "DENY",
+          "route": "HUMAN_REVIEW",
+          "reason": "revoked_or_stale_grant_or_route_blocked"
+        }
+      }
+    },
+    "complete": {
+      "status": 204
+    },
+    "inspect": {
+      "process_instance_id": "93406872-e34b-11f1-9fac-76863b3dbd01",
+      "status": "ACTIVE",
+      "tasks": [
+        {
+          "id": "983b47ca-e34b-11f1-9fac-76863b3dbd01",
+          "taskDefinitionKey": "human_review",
+          "name": "Manual KYC analyst review"
+        }
+      ],
+      "human_review_pending": true
+    },
+    "gateway_state": {
+      "providers": {
+        "external-kyc-provider": {
+          "status": "REVOKED",
+          "version": 2
+        }
+      },
+      "cases": {
+        "KYC-LIVE-3b8df312ba": {
+          "case_id": "KYC-LIVE-3b8df312ba",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "route": "HUMAN_REVIEW"
+        }
+      }
+    },
+    "evidence": {
+      "mode": "IN_MEMORY_HASH_CHAIN",
+      "valid": true,
+      "events": [
+        {
+          "sequence": 1,
+          "timestamp": "2026-11-18T12:28:35.744014+00:00",
+          "kind": "CASE_STARTED",
+          "data": {
+            "case_id": "KYC-LIVE-3b8df312ba",
+            "route": "AUTOMATED_VERIFICATION"
+          },
+          "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "hash": "d334871e4f581e42809437065a673354fdf1a0be853895a66dd23960671a8b76"
+        },
+        {
+          "sequence": 2,
+          "timestamp": "2026-11-18T12:28:36.546074+00:00",
+          "kind": "TOOL_CALL_DECISION",
+          "data": {
+            "case_id": "KYC-LIVE-3b8df312ba",
+            "provider_id": "external-kyc-provider",
+            "grant_version": 1,
+            "provider_version": 1,
+            "policy": {
+              "engine": "FLUXNOVA_DMN",
+              "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+              "decision": "ALLOW",
+              "facts": {
+                "policy_enabled": true,
+                "provider_active": true,
+                "route_automated": true,
+                "grant_matches": true
+              }
+            },
+            "decision": "ALLOW"
+          },
+          "previous_hash": "d334871e4f581e42809437065a673354fdf1a0be853895a66dd23960671a8b76",
+          "hash": "cfa70d3b15cac07224eb7fbe4414d32555e950d9280fe7959f4ba74102ec9cae"
+        },
+        {
+          "sequence": 3,
+          "timestamp": "2026-11-18T12:28:40.491615+00:00",
+          "kind": "PROVIDER_REVOKED",
+          "data": {
+            "provider_id": "external-kyc-provider",
+            "reason": "provider_security_alert",
+            "version": 2,
+            "cases_rerouted": [
+              "KYC-LIVE-3b8df312ba"
+            ],
+            "impact": [
+              "fluxnova-kyc-process",
+              "revokeline-gateway"
+            ]
+          },
+          "previous_hash": "cfa70d3b15cac07224eb7fbe4414d32555e950d9280fe7959f4ba74102ec9cae",
+          "hash": "4048341b3ea557cd4bb54682a47965d9f125d2cf45f13c77f8e0415ba54da893"
+        },
+        {
+          "sequence": 4,
+          "timestamp": "2026-11-18T12:28:44.066309+00:00",
+          "kind": "TOOL_CALL_DECISION",
+          "data": {
+            "case_id": "KYC-LIVE-3b8df312ba",
+            "provider_id": "external-kyc-provider",
+            "grant_version": 1,
+            "provider_version": 2,
+            "policy": {
+              "engine": "FLUXNOVA_DMN",
+              "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+              "decision": "DENY",
+              "facts": {
+                "policy_enabled": true,
+                "provider_active": false,
+                "route_automated": false,
+                "grant_matches": false
+              }
+            },
+            "decision": "DENY"
+          },
+          "previous_hash": "4048341b3ea557cd4bb54682a47965d9f125d2cf45f13c77f8e0415ba54da893",
+          "hash": "7c1da9456b25f6d6fead2fa0fc441eec7b030c5d05365d6a7316cec11215ea6e"
+        }
+      ],
+      "tip_hash": "7c1da9456b25f6d6fead2fa0fc441eec7b030c5d05365d6a7316cec11215ea6e"
+    },
+    "result": {
+      "status": "PASS_LIVE_COMMAND_CENTER",
+      "case_id": "KYC-LIVE-3b8df312ba",
+      "instance_id": "93406872-e34b-11f1-9fac-76863b3dbd01",
+      "decisions": [
+        "ALLOW",
+        "DENY"
+      ]
+    }
+  },
+  "error": null
+}

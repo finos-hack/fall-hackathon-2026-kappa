@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  id="RevokelineExecutableDefinitions"
+                  targetNamespace="https://finos.org/revokeline/fluxnova">
+  <bpmn:process id="revokeline_kyc_v02" name="REVOKELINE KYC - Incident Enforcement" isExecutable="true">
+    <bpmn:startEvent id="start" name="Case initiated">
+      <bpmn:outgoing>flow_start_check</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="check_authority" name="Enforce access at call time"
+                      camunda:type="external" camunda:topic="revokeline-kyc-authority">
+      <bpmn:incoming>flow_start_check</bpmn:incoming>
+      <bpmn:outgoing>flow_check_decision</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="authorization_gateway" name="Provider authorized?" default="flow_deny">
+      <bpmn:incoming>flow_check_decision</bpmn:incoming>
+      <bpmn:outgoing>flow_allow</bpmn:outgoing>
+      <bpmn:outgoing>flow_deny</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="human_review" name="Manual KYC analyst review">
+      <bpmn:incoming>flow_deny</bpmn:incoming>
+      <bpmn:outgoing>flow_review_done</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="end_auto" name="Automated verification completed">
+      <bpmn:incoming>flow_allow</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="end_human" name="Human review completed">
+      <bpmn:incoming>flow_review_done</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_start_check" sourceRef="start" targetRef="check_authority"/>
+    <bpmn:sequenceFlow id="flow_check_decision" sourceRef="check_authority" targetRef="authorization_gateway"/>
+    <bpmn:sequenceFlow id="flow_allow" sourceRef="authorization_gateway" targetRef="end_auto">
+      <bpmn:conditionExpression xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:type="bpmn:tFormalExpression" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">${authorized == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_deny" sourceRef="authorization_gateway" targetRef="human_review"/>
+    <bpmn:sequenceFlow id="flow_review_done" sourceRef="human_review" targetRef="end_human"/>
+  </bpmn:process>
+</bpmn:definitions>
