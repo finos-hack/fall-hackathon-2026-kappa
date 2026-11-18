@@ -1,7 +1,7 @@
 {
   "$schema": "https://calm.finos.org/release/1.3/meta/calm.json",
   "metadata": {
-    "version": "0.2.3",
+    "version": "0.2.7",
     "description": "Logical dependency architecture for the local synthetic incident demo. Connections describe business dependencies, not necessarily separate network services. No claim of production security or TLS."
   },
   "nodes": [
@@ -47,6 +47,18 @@
       "interfaces": [
         {
           "unique-id": "provider-api",
+          "description": "Logical simulated provider interface; no network endpoint"
+        }
+      ]
+    },
+    {
+      "unique-id": "secondary-kyc-provider",
+      "node-type": "service",
+      "name": "Secondary synthetic KYC provider",
+      "description": "Independent simulated verification provider; no remote service.",
+      "interfaces": [
+        {
+          "unique-id": "secondary-provider-api",
           "description": "Logical simulated provider interface; no network endpoint"
         }
       ]
@@ -164,6 +176,26 @@
             "node": "evidence-store",
             "interfaces": [
               "evidence-api"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "unique-id": "gateway-to-secondary-provider",
+      "description": "Logical connection to the second simulated provider.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "revokeline-gateway",
+            "interfaces": [
+              "gateway-api"
+            ]
+          },
+          "destination": {
+            "node": "secondary-kyc-provider",
+            "interfaces": [
+              "secondary-provider-api"
             ]
           }
         }

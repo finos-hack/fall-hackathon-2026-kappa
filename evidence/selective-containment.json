@@ -1,0 +1,406 @@
+{
+  "status": "PASS_LIVE_SELECTIVE_CONTAINMENT",
+  "decision_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+  "affected": {
+    "started": {
+      "case": {
+        "case_id": "KYC-SELECT-f11d66ad02-A",
+        "provider_id": "external-kyc-provider",
+        "grant_version": 1,
+        "route": "AUTOMATED_VERIFICATION"
+      },
+      "process_instance": {
+        "links": [
+          {
+            "method": "GET",
+            "href": "http://127.0.0.1:8080/engine-rest/process-instance/1f6e92b1-e368-11f1-9fac-76863b3dbd01",
+            "rel": "self"
+          }
+        ],
+        "id": "1f6e92b1-e368-11f1-9fac-76863b3dbd01",
+        "definitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+        "businessKey": "KYC-SELECT-f11d66ad02-A",
+        "caseInstanceId": null,
+        "ended": false,
+        "suspended": false,
+        "tenantId": null,
+        "definitionKey": "revokeline_kyc_v02"
+      }
+    },
+    "task": {
+      "activityId": "check_authority",
+      "activityInstanceId": "check_authority:1f75e5bb-e368-11f1-9fac-76863b3dbd01",
+      "errorMessage": null,
+      "executionId": "1f75beaa-e368-11f1-9fac-76863b3dbd01",
+      "id": "1f7681fc-e368-11f1-9fac-76863b3dbd01",
+      "lockExpirationTime": null,
+      "createTime": "2026-11-18T15:52:56.916+0000",
+      "processDefinitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+      "processDefinitionKey": "revokeline_kyc_v02",
+      "processDefinitionVersionTag": null,
+      "processInstanceId": "1f6e92b1-e368-11f1-9fac-76863b3dbd01",
+      "retries": null,
+      "suspended": false,
+      "workerId": null,
+      "topicName": "revokeline-kyc-authority",
+      "tenantId": null,
+      "priority": 0,
+      "businessKey": "KYC-SELECT-f11d66ad02-A"
+    },
+    "payload": {
+      "case_id": "KYC-SELECT-f11d66ad02-A",
+      "provider_id": "external-kyc-provider",
+      "grant_version": 1
+    },
+    "before": {
+      "status": 200,
+      "response": {
+        "decision": "ALLOW",
+        "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+      }
+    },
+    "after": {
+      "lock_status": 204,
+      "gateway": {
+        "status": 403,
+        "response": {
+          "detail": {
+            "decision": "DENY",
+            "route": "HUMAN_REVIEW",
+            "reason": "revoked_or_stale_grant_or_route_blocked"
+          }
+        }
+      },
+      "complete_status": 204
+    },
+    "inspect": {
+      "process_instance_id": "1f6e92b1-e368-11f1-9fac-76863b3dbd01",
+      "status": "ACTIVE",
+      "tasks": [
+        {
+          "id": "20bb1020-e368-11f1-9fac-76863b3dbd01",
+          "taskDefinitionKey": "human_review",
+          "name": "Manual KYC analyst review"
+        }
+      ],
+      "human_review_pending": true
+    }
+  },
+  "unaffected": {
+    "started": {
+      "case": {
+        "case_id": "KYC-SELECT-f11d66ad02-B",
+        "provider_id": "secondary-kyc-provider",
+        "grant_version": 1,
+        "route": "AUTOMATED_VERIFICATION"
+      },
+      "process_instance": {
+        "links": [
+          {
+            "method": "GET",
+            "href": "http://127.0.0.1:8080/engine-rest/process-instance/1f90729f-e368-11f1-9fac-76863b3dbd01",
+            "rel": "self"
+          }
+        ],
+        "id": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+        "definitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+        "businessKey": "KYC-SELECT-f11d66ad02-B",
+        "caseInstanceId": null,
+        "ended": false,
+        "suspended": false,
+        "tenantId": null,
+        "definitionKey": "revokeline_kyc_v02"
+      }
+    },
+    "task": {
+      "activityId": "check_authority",
+      "activityInstanceId": "check_authority:1f91f949-e368-11f1-9fac-76863b3dbd01",
+      "errorMessage": null,
+      "executionId": "1f91f948-e368-11f1-9fac-76863b3dbd01",
+      "id": "1f91f94a-e368-11f1-9fac-76863b3dbd01",
+      "lockExpirationTime": null,
+      "createTime": "2026-11-18T15:52:57.096+0000",
+      "processDefinitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+      "processDefinitionKey": "revokeline_kyc_v02",
+      "processDefinitionVersionTag": null,
+      "processInstanceId": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+      "retries": null,
+      "suspended": false,
+      "workerId": null,
+      "topicName": "revokeline-kyc-authority",
+      "tenantId": null,
+      "priority": 0,
+      "businessKey": "KYC-SELECT-f11d66ad02-B"
+    },
+    "payload": {
+      "case_id": "KYC-SELECT-f11d66ad02-B",
+      "provider_id": "secondary-kyc-provider",
+      "grant_version": 1
+    },
+    "before": {
+      "status": 200,
+      "response": {
+        "decision": "ALLOW",
+        "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+      }
+    },
+    "after": {
+      "lock_status": 204,
+      "gateway": {
+        "status": 200,
+        "response": {
+          "decision": "ALLOW",
+          "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+        }
+      },
+      "complete_status": 204
+    },
+    "inspect": {
+      "process_instance_id": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+      "status": "NO_ACTIVE_INSTANCE_CHECK_HISTORY_FOR_COMPLETION",
+      "tasks": [],
+      "human_review_pending": false
+    },
+    "history": {
+      "process": {
+        "id": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+        "businessKey": "KYC-SELECT-f11d66ad02-B",
+        "processDefinitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+        "processDefinitionKey": "revokeline_kyc_v02",
+        "processDefinitionName": "REVOKELINE KYC - Incident Enforcement",
+        "processDefinitionVersion": 1,
+        "startTime": "2026-11-18T15:52:57.086+0000",
+        "endTime": "2026-11-18T15:52:59.948+0000",
+        "removalTime": "2026-11-19T15:52:59.948+0000",
+        "durationInMillis": 2862,
+        "startUserId": "demo",
+        "startActivityId": "start",
+        "deleteReason": null,
+        "rootProcessInstanceId": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+        "superProcessInstanceId": null,
+        "superCaseInstanceId": null,
+        "caseInstanceId": null,
+        "tenantId": null,
+        "state": "COMPLETED",
+        "restartedProcessInstanceId": null
+      },
+      "automated_end_activities": [
+        {
+          "id": "end_auto:213f5a61-e368-11f1-9fac-76863b3dbd01",
+          "parentActivityInstanceId": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+          "activityId": "end_auto",
+          "activityName": "Automated verification completed",
+          "activityType": "noneEndEvent",
+          "processDefinitionKey": "revokeline_kyc_v02",
+          "processDefinitionId": "revokeline_kyc_v02:1:40d35011-e299-11f1-90ee-9e8414e8c222",
+          "processInstanceId": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+          "executionId": "1f90729f-e368-11f1-9fac-76863b3dbd01",
+          "taskId": null,
+          "calledProcessInstanceId": null,
+          "calledCaseInstanceId": null,
+          "assignee": null,
+          "startTime": "2026-11-18T15:52:59.910+0000",
+          "endTime": "2026-11-18T15:52:59.913+0000",
+          "durationInMillis": 3,
+          "canceled": false,
+          "completeScope": true,
+          "tenantId": null,
+          "removalTime": "2026-11-19T15:52:59.948+0000",
+          "rootProcessInstanceId": "1f90729f-e368-11f1-9fac-76863b3dbd01"
+        }
+      ]
+    }
+  },
+  "incident": {
+    "status": "REVOKED",
+    "version": 2,
+    "cases_rerouted": [
+      "KYC-SELECT-f11d66ad02-A"
+    ],
+    "impact": [
+      "fluxnova-kyc-process",
+      "revokeline-gateway"
+    ]
+  },
+  "gateway_state": {
+    "providers": {
+      "external-kyc-provider": {
+        "status": "REVOKED",
+        "version": 2
+      },
+      "secondary-kyc-provider": {
+        "status": "ACTIVE",
+        "version": 1
+      }
+    },
+    "cases": {
+      "KYC-SELECT-f11d66ad02-A": {
+        "case_id": "KYC-SELECT-f11d66ad02-A",
+        "provider_id": "external-kyc-provider",
+        "grant_version": 1,
+        "route": "HUMAN_REVIEW"
+      },
+      "KYC-SELECT-f11d66ad02-B": {
+        "case_id": "KYC-SELECT-f11d66ad02-B",
+        "provider_id": "secondary-kyc-provider",
+        "grant_version": 1,
+        "route": "AUTOMATED_VERIFICATION"
+      }
+    }
+  },
+  "evidence": {
+    "mode": "IN_MEMORY_HASH_CHAIN",
+    "valid": true,
+    "events": [
+      {
+        "sequence": 1,
+        "timestamp": "2026-11-18T15:52:56.808848+00:00",
+        "kind": "CASE_STARTED",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-A",
+          "route": "AUTOMATED_VERIFICATION"
+        },
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "hash": "f735840f32b7b7ed38e189ab4a356a994e55070f5cf825880a7bd5017f09af81"
+      },
+      {
+        "sequence": 2,
+        "timestamp": "2026-11-18T15:52:57.049199+00:00",
+        "kind": "CASE_STARTED",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-B",
+          "route": "AUTOMATED_VERIFICATION"
+        },
+        "previous_hash": "f735840f32b7b7ed38e189ab4a356a994e55070f5cf825880a7bd5017f09af81",
+        "hash": "8a25343cdf764bf10b299fb21965a52e3a1d7ff03e6ccb297fcbf7b778f79940"
+      },
+      {
+        "sequence": 3,
+        "timestamp": "2026-11-18T15:52:57.828835+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-A",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "ALLOW",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": true,
+              "route_automated": true,
+              "grant_matches": true
+            }
+          },
+          "decision": "ALLOW"
+        },
+        "previous_hash": "8a25343cdf764bf10b299fb21965a52e3a1d7ff03e6ccb297fcbf7b778f79940",
+        "hash": "0026d214a98223f60b3dc9f2f1e8a7097e002b7190b9178612a5d73dc578a213"
+      },
+      {
+        "sequence": 4,
+        "timestamp": "2026-11-18T15:52:58.373205+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-B",
+          "provider_id": "secondary-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "ALLOW",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": true,
+              "route_automated": true,
+              "grant_matches": true
+            }
+          },
+          "decision": "ALLOW"
+        },
+        "previous_hash": "0026d214a98223f60b3dc9f2f1e8a7097e002b7190b9178612a5d73dc578a213",
+        "hash": "5024179e8ef13c7e0a40680b4217c982ffbd56dae05be0e1177b2d7fdc237300"
+      },
+      {
+        "sequence": 5,
+        "timestamp": "2026-11-18T15:52:58.380954+00:00",
+        "kind": "PROVIDER_REVOKED",
+        "data": {
+          "provider_id": "external-kyc-provider",
+          "reason": "provider_security_alert",
+          "version": 2,
+          "cases_rerouted": [
+            "KYC-SELECT-f11d66ad02-A"
+          ],
+          "impact": [
+            "fluxnova-kyc-process",
+            "revokeline-gateway"
+          ]
+        },
+        "previous_hash": "5024179e8ef13c7e0a40680b4217c982ffbd56dae05be0e1177b2d7fdc237300",
+        "hash": "5ad1ccd384484c2194fcc09c878d689620b55cd9fb00b19e0c5cd93ca669b22c"
+      },
+      {
+        "sequence": 6,
+        "timestamp": "2026-11-18T15:52:58.935005+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-A",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 2,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "DENY",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": false,
+              "route_automated": false,
+              "grant_matches": false
+            }
+          },
+          "decision": "DENY"
+        },
+        "previous_hash": "5ad1ccd384484c2194fcc09c878d689620b55cd9fb00b19e0c5cd93ca669b22c",
+        "hash": "5da1d3a4035e3bd7d185ca8ef135a68d679074a7bf88c126534851a31b68a7a9"
+      },
+      {
+        "sequence": 7,
+        "timestamp": "2026-11-18T15:52:59.855576+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-SELECT-f11d66ad02-B",
+          "provider_id": "secondary-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "ALLOW",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": true,
+              "route_automated": true,
+              "grant_matches": true
+            }
+          },
+          "decision": "ALLOW"
+        },
+        "previous_hash": "5da1d3a4035e3bd7d185ca8ef135a68d679074a7bf88c126534851a31b68a7a9",
+        "hash": "65dd3bf1ff0b49c44233ce441b026f3156aef235ac3a6845cb1a656c29edfdf2"
+      }
+    ],
+    "tip_hash": "65dd3bf1ff0b49c44233ce441b026f3156aef235ac3a6845cb1a656c29edfdf2"
+  },
+  "metrics": {
+    "affected_post_incident_calls_denied": 1,
+    "unaffected_post_incident_calls_allowed": 1,
+    "affected_native_reviews": 1,
+    "unaffected_automated_completions": 1
+  },
+  "scope": "Two synthetic providers and cases; no external provider call or production availability claim."
+}

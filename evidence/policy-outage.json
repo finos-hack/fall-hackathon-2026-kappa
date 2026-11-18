@@ -1,0 +1,188 @@
+{
+  "status": "PASS_LIVE_POLICY_OUTAGE",
+  "decision_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+  "payload": {
+    "case_id": "KYC-OUTAGE-0a2393f800",
+    "provider_id": "external-kyc-provider",
+    "grant_version": 1
+  },
+  "engine_before": "ALLOW",
+  "engine_outage": {
+    "transport_error": "ConnectError"
+  },
+  "engine_after": "ALLOW",
+  "calls": [
+    {
+      "status": 200,
+      "response": {
+        "decision": "ALLOW",
+        "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+      }
+    },
+    {
+      "status": 503,
+      "response": {
+        "detail": {
+          "decision": "DENY",
+          "reason": "policy_unavailable_or_invalid"
+        }
+      }
+    },
+    {
+      "status": 200,
+      "response": {
+        "decision": "ALLOW",
+        "synthetic_result": "DOCUMENT_CHECK_COMPLETED"
+      }
+    }
+  ],
+  "states": [
+    {
+      "providers": {
+        "external-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        },
+        "secondary-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        }
+      },
+      "cases": {
+        "KYC-OUTAGE-0a2393f800": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "route": "AUTOMATED_VERIFICATION"
+        }
+      }
+    },
+    {
+      "providers": {
+        "external-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        },
+        "secondary-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        }
+      },
+      "cases": {
+        "KYC-OUTAGE-0a2393f800": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "route": "AUTOMATED_VERIFICATION"
+        }
+      }
+    },
+    {
+      "providers": {
+        "external-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        },
+        "secondary-kyc-provider": {
+          "status": "ACTIVE",
+          "version": 1
+        }
+      },
+      "cases": {
+        "KYC-OUTAGE-0a2393f800": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "route": "AUTOMATED_VERIFICATION"
+        }
+      }
+    }
+  ],
+  "evidence": {
+    "mode": "IN_MEMORY_HASH_CHAIN",
+    "valid": true,
+    "events": [
+      {
+        "sequence": 1,
+        "timestamp": "2026-11-18T16:14:52.548431+00:00",
+        "kind": "CASE_STARTED",
+        "data": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "route": "AUTOMATED_VERIFICATION"
+        },
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "hash": "61c5e174953acefcb4eb31683ee62196cd4e4d815bd6025093219bcefc88be7f"
+      },
+      {
+        "sequence": 2,
+        "timestamp": "2026-11-18T16:14:54.249936+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "ALLOW",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": true,
+              "route_automated": true,
+              "grant_matches": true
+            }
+          },
+          "decision": "ALLOW"
+        },
+        "previous_hash": "61c5e174953acefcb4eb31683ee62196cd4e4d815bd6025093219bcefc88be7f",
+        "hash": "77cf7e05b03ab74b370f75fee9ae9bbeb0d55c0cbb19df2a398545bd630bdada"
+      },
+      {
+        "sequence": 3,
+        "timestamp": "2026-11-18T16:15:18.358315+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "decision": "DENY",
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "status": "UNAVAILABLE_OR_INVALID"
+          }
+        },
+        "previous_hash": "77cf7e05b03ab74b370f75fee9ae9bbeb0d55c0cbb19df2a398545bd630bdada",
+        "hash": "e00baa89f4662efd5a7371881f7efb1d40fa081b80b83499d39f1b3f84a8b174"
+      },
+      {
+        "sequence": 4,
+        "timestamp": "2026-11-18T16:16:53.955930+00:00",
+        "kind": "TOOL_CALL_DECISION",
+        "data": {
+          "case_id": "KYC-OUTAGE-0a2393f800",
+          "provider_id": "external-kyc-provider",
+          "grant_version": 1,
+          "provider_version": 1,
+          "policy": {
+            "engine": "FLUXNOVA_DMN",
+            "definition_id": "618d4f37-e347-11f1-9fac-76863b3dbd01",
+            "decision": "ALLOW",
+            "facts": {
+              "policy_enabled": true,
+              "provider_active": true,
+              "route_automated": true,
+              "grant_matches": true
+            }
+          },
+          "decision": "ALLOW"
+        },
+        "previous_hash": "e00baa89f4662efd5a7371881f7efb1d40fa081b80b83499d39f1b3f84a8b174",
+        "hash": "0b7d5a8a11081a2e6c743015968a8e94bbb7c473ec46ed6e5e10f52101649522"
+      }
+    ],
+    "tip_hash": "0b7d5a8a11081a2e6c743015968a8e94bbb7c473ec46ed6e5e10f52101649522"
+  },
+  "scope": "Dedicated local Fluxnova REST outage (BPMN also unavailable). Gateway stays up. No real provider calls or workflow availability guarantee."
+}

@@ -36,7 +36,10 @@ class Store:
 
     def reset(self):
         with lock:
-            self.providers = {'external-kyc-provider': {'status': 'ACTIVE', 'version': 1}}
+            self.providers = {
+                'external-kyc-provider': {'status': 'ACTIVE', 'version': 1},
+                'secondary-kyc-provider': {'status': 'ACTIVE', 'version': 1},
+            }
             self.cases = {}
             self.events = []
 
