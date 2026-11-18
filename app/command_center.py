@@ -118,3 +118,12 @@ def mutate(action: str, request: Request):
             session.state['error'] = f'{type(exc).__name__}: {exc}'
             return copy.deepcopy(session.state)
         return copy.deepcopy(session.state)
+
+@app.get('/assurance')
+def assurance_page():
+    return FileResponse(HERE / 'assurance.html', media_type='text/html', headers={'Cache-Control':'no-store'})
+
+@app.get('/ui/assurance-report')
+def assurance_report():
+    from scripts.recorded_assurance import report
+    return report()

@@ -5,7 +5,7 @@ Runtime incident response for FINOS Governance-as-Code.
 **Hackathon Track:** Track 2 — Extend & Utilize FINOS Governance-as-Code
 FINOS Fall 2026 Hackathon · Team Kappa
 
-A KYC workflow can start with a trusted third-party provider and still be running when that provider is compromised. REVOKELINE checks authorization again at the next sensitive operation, refuses stale grants, and routes affected work to a native Fluxnova human review task. The prototype uses a synthetic provider and synthetic data.
+A KYC workflow can start with a trusted third-party provider and still be running when that provider is compromised. REVOKELINE checks authorization again at the next sensitive operation, refuses stale grants, and routes affected work to a native Fluxnova human review task. The prototype uses two synthetic providers and synthetic data. Revocation is scoped to the affected provider; an unaffected case can complete normally. If the policy engine is unavailable, the gateway refuses the sensitive call and allows the unchanged grant again once the policy becomes available.
 
 ![Command Center after revocation](evidence/screenshots/gate5-live-dmn.png)
 
@@ -20,6 +20,7 @@ flowchart LR
     G --> E[Hash-chained events]
     G -->|DENY| B
     B --> H[Human review task]
+    B -->|ALLOW| N[Automated completion]
     E --> A[Offline assurance]
 ```
 
@@ -46,14 +47,29 @@ calm validate -a architectures/revokeline.calm.json --strict
 
 Once the engine and gateway are running, use `python -m scripts.fluxnova_targeted_demo`, or start the Command Center on port 8001 as described in the runbook.
 
+To reproduce the two-provider scenario with DMN enabled and Fluxnova history recording active:
+
+```sh
+python -m scripts.selective_containment --output evidence/selective-containment.json
+```
+
+See [selective containment](docs/SELECTIVE_CONTAINMENT.md) for setup and scope.
+
+For the dedicated local engine stop/start exercise, see [policy outage and recorded assurance](docs/POLICY_OUTAGE.md). The read-only assurance view is available at `/assurance` on the Command Center; it recalculates checks on saved evidence and distinguishes missing or invalid evidence from verified scenarios.
+
 ## Results
 
 Local integration runs on 18 November 2026 with Fluxnova 2.0.0:
 
 - A previously authorized grant returned HTTP 200 before revocation and HTTP 403 afterwards. Fluxnova created an active `human_review` task.
 - The live DMN policy returned the expected result for all 16 Boolean input combinations (1 ALLOW, 15 DENY).
-- CALM strict validation returned no errors or warnings.
+- Selective containment: one affected request denied and routed to a native review task; one unaffected request allowed and its BPMN process completed normally (verified in Fluxnova history). The script checked seven chained audit events and four decisions against the pinned DMN definition.
+- A real stop/start of the dedicated Fluxnova container produced HTTP 200 ALLOW, HTTP 503 DENY, then HTTP 200 ALLOW for the same grant. Four audit events were checked; the provider remained active.
+- 68 regression tests passed (one Starlette deprecation warning); `pip check` found no broken requirements and CALM strict validation returned no errors or warnings.
+- The recorded assurance view verified all three saved scenarios and retained `BLOCKED` for production readiness.
 - Offline assurance accepted the original evidence, rejected an altered event and refused production approval.
+
+![Recorded assurance view](evidence/screenshots/recorded-assurance.png)
 
 The [recorded results](docs/RESULTS.md) explain the evidence and its scope. To inspect the saved run without a live engine:
 
@@ -75,8 +91,8 @@ Development used AI-assisted design, coding and documentation. The live integrat
 
 ## Roadmap
 
-- Validate selective containment across independent providers and workflows.
-- Exercise policy engine outages against a live deployment.
+- Extend selective containment tests to larger, concurrent workloads and additional failure cases.
+- Test independent policy-service failures and recovery under concurrent workloads.
 - Add authenticated callers, encrypted transport and a separately protected audit sink before considering production use.
 
 ## Contributing
