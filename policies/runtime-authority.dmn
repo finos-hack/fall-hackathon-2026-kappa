@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="rvl_definitions" name="REVOKELINE runtime governance" namespace="https://revokeline.example/policy">
+  <decision id="revokeline_runtime_authority_v1" name="Runtime KYC authorization">
+    <decisionTable id="rvl_authority_table" hitPolicy="FIRST">
+      <input id="policy_input" label="Request-time enforcement enabled"><inputExpression id="policy_expr" typeRef="boolean"><text>policy_enabled</text></inputExpression></input>
+      <input id="provider_input" label="Provider active"><inputExpression id="provider_expr" typeRef="boolean"><text>provider_active</text></inputExpression></input>
+      <input id="route_input" label="Automated route"><inputExpression id="route_expr" typeRef="boolean"><text>route_automated</text></inputExpression></input>
+      <input id="grant_input" label="Grant versions match"><inputExpression id="grant_expr" typeRef="boolean"><text>grant_matches</text></inputExpression></input>
+      <output id="decision_output" name="decision" typeRef="string"/>
+      <rule id="allow_rule">
+        <inputEntry id="a1"><text>true</text></inputEntry><inputEntry id="a2"><text>true</text></inputEntry><inputEntry id="a3"><text>true</text></inputEntry><inputEntry id="a4"><text>true</text></inputEntry>
+        <outputEntry id="allow_output"><text>"ALLOW"</text></outputEntry>
+      </rule>
+      <rule id="default_deny_rule">
+        <inputEntry id="d1"><text>-</text></inputEntry><inputEntry id="d2"><text>-</text></inputEntry><inputEntry id="d3"><text>-</text></inputEntry><inputEntry id="d4"><text>-</text></inputEntry>
+        <outputEntry id="deny_output"><text>"DENY"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

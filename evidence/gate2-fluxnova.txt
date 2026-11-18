@@ -1,0 +1,12 @@
+﻿{
+  "process_instance_id": "4e32df42-e333-11f1-9fac-76863b3dbd01",
+  "status": "ACTIVE",
+  "tasks": [
+    {
+      "id": "4ed16948-e333-11f1-9fac-76863b3dbd01",
+      "taskDefinitionKey": "human_review",
+      "name": "Manual KYC analyst review"
+    }
+  ],
+  "human_review_pending": true
+}

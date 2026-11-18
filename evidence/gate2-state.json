@@ -1,0 +1,1 @@
+{"providers":{"external-kyc-provider":{"status":"REVOKED","version":2}},"cases":{"KYC-FLUX-9304147e9d":{"case_id":"KYC-FLUX-9304147e9d","provider_id":"external-kyc-provider","grant_version":1,"route":"HUMAN_REVIEW"}}}
