@@ -1,0 +1,79 @@
+01_intro
+
+What if a third party you trusted at the beginning of a financial workflow became unsafe before the workflow finished? Would the next operation still be authorized?
+
+Introducing Revoke Line, Team Kappa's contribution to Track Two of the FINOS Fall 2026 Hackathon: Extend and Utilize FINOS Governance as Code.
+
+Our goal is to bring governance into runtime execution, not just deployment. Revoke Line combines dynamic trust revocation, selective incident containment, and secure recovery when the policy engine becomes unavailable. This presentation walks through the implemented prototype and its recorded integration results.
+
+02_problem
+
+Consider a synthetic Know Your Customer workflow. A financial institution starts a verification case with an approved external provider. The case receives a grant at version one.
+
+While the case is running, a security alert changes the provider's trust status. The provider is revoked, and its authorization version moves to two. However, the workflow still holds the original grant.
+
+The key question is what happens at the next sensitive operation. A valid decision made earlier is no longer sufficient. The authorization must reflect the current trust state at the moment of use.
+
+03_differentiation
+
+There are two undesirable responses to this incident.
+
+If a workflow relies on cached authorization, it may continue using the compromised provider. If the institution shuts down every provider, it may also interrupt legitimate business operations.
+
+Revoke Line takes a targeted approach. It rejects the compromised access while preserving the independent workflow that still has valid authorization.
+
+The first two approaches shown here are conceptual baselines, not measurements against competing products. The Revoke Line result was observed in a local integration scenario with two distinct workflow instances.
+
+04_finos
+
+The contribution builds on the FINOS Governance as Code ecosystem rather than replacing it.
+
+CALM describes the architecture and supports dependency impact analysis. The Flux Nova engine executes the business process and evaluates a pinned decision model for runtime authorization.
+
+We also map the implementation to selected mitigations in the AI Governance Framework, and document gaps against selected Common Cloud Controls.
+
+CALM and Flux Nova are integrated directly into the prototype. The other frameworks provide traceability and scoped assurance references. These references are not claims of official conformance.
+
+05_architecture
+
+Here is how the components work together. A provider incident updates its trust state and grant version. The CALM graph identifies impacted upstream dependencies.
+
+When a Flux Nova worker requests a sensitive operation, the Revoke Line gateway checks the case, provider, and grant against the current state. It also evaluates the pinned D M N policy. Both the local guard and the policy must authorize the request. The policy cannot override a local denial.
+
+The worker then routes the outcome to automated completion or human review. Hash-chained audit events support offline verification of the recorded decisions.
+
+06_incident
+
+Here is Revoke Line's recorded incident response on Flux Nova. An authorized case initially receives HTTP two hundred, allow. A simulated provider security alert then revokes trust and increments the provider version.
+
+When the workflow attempts to use its old grant, the gateway returns HTTP four oh three, deny. The worker routes the case to a native human review task in the B P M N engine. This is an actual engine task, not just a status displayed in the interface.
+
+07_containment
+
+The second recorded scenario tests selective containment. Two independent providers are initially authorized. Only provider A is revoked.
+
+Its next call is denied and its workflow enters human review. Provider B remains authorized and completes normally. We verified its automated end event through Flux Nova process and activity history, not simply the disappearance of an active instance.
+
+The result demonstrates targeted containment in this two-case scenario, without unnecessarily interrupting the unaffected workflow.
+
+08_outage
+
+The third scenario tests a real service outage. With the same healthy provider and valid grant, the initial request is allowed. We stop the local Flux Nova container, and the next request returns HTTP five oh three, deny.
+
+After restart, the script waits for the same pinned policy to become available. Authorization resumes. Both workflow and decision services were interrupted. The result demonstrates fail-closed authorization and recovery, not continuous workflow availability.
+
+09_assurance
+
+The assurance view recalculates checks against saved integration evidence. All three recorded scenarios pass. Sixty-eight automated regression tests pass, all sixteen decision combinations were verified on the live engine, and strict CALM validation reports no errors or warnings.
+
+Production readiness is deliberately blocked because important controls remain incomplete. These are verifiable prototype results, with explicit boundaries, not a compliance certification. The code and recorded evidence are available in the official FINOS Team Kappa repository.
+
+10_closing
+
+Revoke Line delivers executable workflow and decision models, an architecture model, a runtime gateway, reproducible integration scripts, and an evidence assurance interface.
+
+Our next engineering priorities would be authenticated caller identity, encrypted transport, protected audit storage, and validation under concurrent workloads. The prototype does not revoke real external credentials or establish production readiness.
+
+Two contributions have been merged into the official FINOS Team Kappa repository. The final implementation is tagged as version one point zero point zero and is available under the Apache Two license.
+
+Governance should respond when trust changes. That is the contribution of Revoke Line. Thank you for your consideration.

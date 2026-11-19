@@ -1,0 +1,340 @@
+1
+00:00:00,200 --> 00:00:05,590
+What if a third party you trusted at the beginning of a financial
+
+2
+00:00:05,590 --> 00:00:08,493
+workflow became unsafe before the workflow finished?
+
+3
+00:00:08,493 --> 00:00:11,396
+Would the next operation still be authorized?
+
+4
+00:00:11,396 --> 00:00:16,786
+Introducing Revoke Line, Team Kappa's contribution to Track Two of the FINOS Fall
+
+5
+00:00:16,786 --> 00:00:20,518
+2026 Hackathon: Extend and Utilize FINOS Governance as Code.
+
+6
+00:00:20,518 --> 00:00:25,494
+Our goal is to bring governance into runtime execution, not just deployment.
+
+7
+00:00:25,494 --> 00:00:30,884
+Revoke Line combines dynamic trust revocation, selective incident containment, and secure recovery when
+
+8
+00:00:30,884 --> 00:00:36,275
+the policy engine becomes unavailable. This presentation walks through the implemented prototype and
+
+9
+00:00:36,275 --> 00:00:37,933
+its recorded integration results.
+
+10
+00:00:38,533 --> 00:00:41,163
+Consider a synthetic Know Your Customer workflow.
+
+11
+00:00:41,163 --> 00:00:45,672
+A financial institution starts a verification case with an approved external provider.
+
+12
+00:00:45,672 --> 00:00:48,678
+The case receives a grant at version one.
+
+13
+00:00:48,678 --> 00:00:53,562
+While the case is running, a security alert changes the provider's trust status.
+
+14
+00:00:53,562 --> 00:00:57,695
+The provider is revoked, and its authorization version moves to two.
+
+15
+00:00:57,695 --> 00:01:00,701
+However, the workflow still holds the original grant.
+
+16
+00:01:00,701 --> 00:01:04,834
+The key question is what happens at the next sensitive operation.
+
+17
+00:01:04,834 --> 00:01:08,216
+A valid decision made earlier is no longer sufficient.
+
+18
+00:01:08,216 --> 00:01:13,100
+The authorization must reflect the current trust state at the moment of use.
+
+19
+00:01:13,700 --> 00:01:17,062
+There are two undesirable responses to this incident.
+
+20
+00:01:17,062 --> 00:01:22,526
+If a workflow relies on cached authorization, it may continue using the compromised
+
+21
+00:01:22,526 --> 00:01:27,990
+provider. If the institution shuts down every provider, it may also interrupt legitimate
+
+22
+00:01:27,990 --> 00:01:31,353
+business operations. Revoke Line takes a targeted approach.
+
+23
+00:01:31,353 --> 00:01:36,817
+It rejects the compromised access while preserving the independent workflow that still has
+
+24
+00:01:36,817 --> 00:01:42,281
+valid authorization. The first two approaches shown here are conceptual baselines, not measurements
+
+25
+00:01:42,281 --> 00:01:47,745
+against competing products. The Revoke Line result was observed in a local integration
+
+26
+00:01:47,745 --> 00:01:50,267
+scenario with two distinct workflow instances.
+
+27
+00:01:50,867 --> 00:01:56,564
+The contribution builds on the FINOS Governance as Code ecosystem rather than replacing
+
+28
+00:01:56,564 --> 00:02:00,947
+it. CALM describes the architecture and supports dependency impact analysis.
+
+29
+00:02:00,947 --> 00:02:06,644
+The Flux Nova engine executes the business process and evaluates a pinned decision
+
+30
+00:02:06,644 --> 00:02:12,341
+model for runtime authorization. We also map the implementation to selected mitigations in
+
+31
+00:02:12,341 --> 00:02:17,600
+the AI Governance Framework, and document gaps against selected Common Cloud Controls.
+
+32
+00:02:17,600 --> 00:02:21,983
+CALM and Flux Nova are integrated directly into the prototype.
+
+33
+00:02:21,983 --> 00:02:25,927
+The other frameworks provide traceability and scoped assurance references.
+
+34
+00:02:25,927 --> 00:02:29,433
+These references are not claims of official conformance.
+
+35
+00:02:30,033 --> 00:02:32,809
+Here is how the components work together.
+
+36
+00:02:32,809 --> 00:02:36,774
+A provider incident updates its trust state and grant version.
+
+37
+00:02:36,774 --> 00:02:39,550
+The CALM graph identifies impacted upstream dependencies.
+
+38
+00:02:39,550 --> 00:02:44,705
+When a Flux Nova worker requests a sensitive operation, the Revoke Line gateway
+
+39
+00:02:44,705 --> 00:02:48,670
+checks the case, provider, and grant against the current state.
+
+40
+00:02:48,670 --> 00:02:52,239
+It also evaluates the pinned D M N policy.
+
+41
+00:02:52,239 --> 00:02:56,601
+Both the local guard and the policy must authorize the request.
+
+42
+00:02:56,601 --> 00:02:59,376
+The policy cannot override a local denial.
+
+43
+00:02:59,376 --> 00:03:04,135
+The worker then routes the outcome to automated completion or human review.
+
+44
+00:03:04,135 --> 00:03:08,100
+Hash-chained audit events support offline verification of the recorded decisions.
+
+45
+00:03:08,700 --> 00:03:12,391
+Here is Revoke Line's recorded incident response on Flux Nova.
+
+46
+00:03:12,391 --> 00:03:15,714
+An authorized case initially receives HTTP two hundred, allow.
+
+47
+00:03:15,714 --> 00:03:20,512
+A simulated provider security alert then revokes trust and increments the provider version.
+
+48
+00:03:20,512 --> 00:03:25,311
+When the workflow attempts to use its old grant, the gateway returns HTTP
+
+49
+00:03:25,311 --> 00:03:30,110
+four oh three, deny. The worker routes the case to a native human
+
+50
+00:03:30,110 --> 00:03:33,432
+review task in the B P M N engine.
+
+51
+00:03:33,432 --> 00:03:38,231
+This is an actual engine task, not just a status displayed in the
+
+52
+00:03:38,231 --> 00:03:38,600
+interface.
+
+53
+00:03:39,200 --> 00:03:42,293
+The second recorded scenario tests selective containment.
+
+54
+00:03:42,293 --> 00:03:44,945
+Two independent providers are initially authorized.
+
+55
+00:03:44,945 --> 00:03:50,689
+Only provider A is revoked. Its next call is denied and its workflow
+
+56
+00:03:50,689 --> 00:03:55,108
+enters human review. Provider B remains authorized and completes normally.
+
+57
+00:03:55,108 --> 00:04:00,853
+We verified its automated end event through Flux Nova process and activity history,
+
+58
+00:04:00,853 --> 00:04:04,388
+not simply the disappearance of an active instance.
+
+59
+00:04:04,388 --> 00:04:10,133
+The result demonstrates targeted containment in this two-case scenario, without unnecessarily interrupting the
+
+60
+00:04:10,133 --> 00:04:11,017
+unaffected workflow.
+
+61
+00:04:11,617 --> 00:04:14,995
+The third scenario tests a real service outage.
+
+62
+00:04:14,995 --> 00:04:20,485
+With the same healthy provider and valid grant, the initial request is allowed.
+
+63
+00:04:20,485 --> 00:04:25,975
+We stop the local Flux Nova container, and the next request returns HTTP
+
+64
+00:04:25,975 --> 00:04:31,465
+five oh three, deny. After restart, the script waits for the same pinned
+
+65
+00:04:31,465 --> 00:04:33,999
+policy to become available. Authorization resumes.
+
+66
+00:04:33,999 --> 00:04:36,955
+Both workflow and decision services were interrupted.
+
+67
+00:04:36,955 --> 00:04:41,600
+The result demonstrates fail-closed authorization and recovery, not continuous workflow availability.
+
+68
+00:04:42,200 --> 00:04:46,374
+The assurance view recalculates checks against saved integration evidence.
+
+69
+00:04:46,374 --> 00:04:52,402
+All three recorded scenarios pass. Sixty-eight automated regression tests pass, all sixteen decision
+
+70
+00:04:52,402 --> 00:04:58,431
+combinations were verified on the live engine, and strict CALM validation reports no
+
+71
+00:04:58,431 --> 00:05:04,459
+errors or warnings. Production readiness is deliberately blocked because important controls remain incomplete.
+
+72
+00:05:04,459 --> 00:05:10,024
+These are verifiable prototype results, with explicit boundaries, not a compliance certification.
+
+73
+00:05:10,024 --> 00:05:16,053
+The code and recorded evidence are available in the official FINOS Team Kappa
+
+74
+00:05:16,053 --> 00:05:16,517
+repository.
+
+75
+00:05:17,117 --> 00:05:22,857
+Revoke Line delivers executable workflow and decision models, an architecture model, a runtime
+
+76
+00:05:22,857 --> 00:05:26,832
+gateway, reproducible integration scripts, and an evidence assurance interface.
+
+77
+00:05:26,832 --> 00:05:32,572
+Our next engineering priorities would be authenticated caller identity, encrypted transport, protected audit
+
+78
+00:05:32,572 --> 00:05:35,222
+storage, and validation under concurrent workloads.
+
+79
+00:05:35,222 --> 00:05:40,521
+The prototype does not revoke real external credentials or establish production readiness.
+
+80
+00:05:40,521 --> 00:05:45,820
+Two contributions have been merged into the official FINOS Team Kappa repository.
+
+81
+00:05:45,820 --> 00:05:51,560
+The final implementation is tagged as version one point zero point zero and
+
+82
+00:05:51,560 --> 00:05:54,651
+is available under the Apache Two license.
+
+83
+00:05:54,651 --> 00:05:57,301
+Governance should respond when trust changes.
+
+84
+00:05:57,301 --> 00:06:00,392
+That is the contribution of Revoke Line.
+
+85
+00:06:00,392 --> 00:06:02,600
+Thank you for your consideration.
+
