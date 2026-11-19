@@ -1,0 +1,120 @@
+1
+00:00:03,200 --> 00:00:06,891
+Here is Revoke Line's recorded incident response on Flux Nova.
+
+2
+00:00:06,891 --> 00:00:10,214
+An authorized case initially receives HTTP two hundred, allow.
+
+3
+00:00:10,214 --> 00:00:15,012
+A simulated provider security alert then revokes trust and increments the provider version.
+
+4
+00:00:15,012 --> 00:00:19,811
+When the workflow attempts to use its old grant, the gateway returns HTTP
+
+5
+00:00:19,811 --> 00:00:24,610
+four oh three, deny. The worker routes the case to a native human
+
+6
+00:00:24,610 --> 00:00:27,932
+review task in the B P M N engine.
+
+7
+00:00:27,932 --> 00:00:32,731
+This is an actual engine task, not just a status displayed in the
+
+8
+00:00:32,731 --> 00:00:33,100
+interface.
+
+9
+00:00:33,700 --> 00:00:36,793
+The second recorded scenario tests selective containment.
+
+10
+00:00:36,793 --> 00:00:39,445
+Two independent providers are initially authorized.
+
+11
+00:00:39,445 --> 00:00:45,189
+Only provider A is revoked. Its next call is denied and its workflow
+
+12
+00:00:45,189 --> 00:00:49,608
+enters human review. Provider B remains authorized and completes normally.
+
+13
+00:00:49,608 --> 00:00:55,353
+We verified its automated end event through Flux Nova process and activity history,
+
+14
+00:00:55,353 --> 00:00:58,888
+not simply the disappearance of an active instance.
+
+15
+00:00:58,888 --> 00:01:04,633
+The result demonstrates targeted containment in this two-case scenario, without unnecessarily interrupting the
+
+16
+00:01:04,633 --> 00:01:05,517
+unaffected workflow.
+
+17
+00:01:06,117 --> 00:01:09,495
+The third scenario tests a real service outage.
+
+18
+00:01:09,495 --> 00:01:14,985
+With the same healthy provider and valid grant, the initial request is allowed.
+
+19
+00:01:14,985 --> 00:01:20,475
+We stop the local Flux Nova container, and the next request returns HTTP
+
+20
+00:01:20,475 --> 00:01:25,965
+five oh three, deny. After restart, the script waits for the same pinned
+
+21
+00:01:25,965 --> 00:01:28,499
+policy to become available. Authorization resumes.
+
+22
+00:01:28,499 --> 00:01:31,455
+Both workflow and decision services were interrupted.
+
+23
+00:01:31,455 --> 00:01:36,100
+The result demonstrates fail-closed authorization and recovery, not continuous workflow availability.
+
+24
+00:01:36,700 --> 00:01:40,874
+The assurance view recalculates checks against saved integration evidence.
+
+25
+00:01:40,874 --> 00:01:46,902
+All three recorded scenarios pass. Sixty-eight automated regression tests pass, all sixteen decision
+
+26
+00:01:46,902 --> 00:01:52,931
+combinations were verified on the live engine, and strict CALM validation reports no
+
+27
+00:01:52,931 --> 00:01:58,959
+errors or warnings. Production readiness is deliberately blocked because important controls remain incomplete.
+
+28
+00:01:58,959 --> 00:02:04,524
+These are verifiable prototype results, with explicit boundaries, not a compliance certification.
+
+29
+00:02:04,524 --> 00:02:10,553
+The code and recorded evidence are available in the official FINOS Team Kappa
+
+30
+00:02:10,553 --> 00:02:11,017
+repository.
+
